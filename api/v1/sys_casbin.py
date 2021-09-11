@@ -9,11 +9,8 @@
 # @Desc    :
 """
 更新casbin权限
-
 更多其他操作查看文档
 https://casbin.org/docs/zh-CN/management-api
-(目前文档好像没有更新Python示例 2021/1/29)
-
 """
 
 from fastapi import APIRouter
