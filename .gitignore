@@ -27,3 +27,6 @@ models/__pycache__/casbin_rule.cpython-38.pyc
 models/__pycache__/sys_api.cpython-38.pyc
 models/__pycache__/sys_auth.cpython-38.pyc
 models/__pycache__/sys_module.cpython-38.pyc
+logs/2021-09-23_error.log
+logs/2021-09-23_info.log
+logs/2021-09-23_warning.log

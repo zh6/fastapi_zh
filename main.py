@@ -1,12 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time    : 2020/10/15 16:24
-# @Author  : CoderCharm
-# @File    : main.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
+
 
 """
 pip install uvicorn

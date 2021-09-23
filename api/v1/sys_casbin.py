@@ -1,18 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2021/1/29 20:36
-# @Author  : CoderCharm
-# @File    : sys_casbin.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
-"""
-更新casbin权限
-更多其他操作查看文档
-https://casbin.org/docs/zh-CN/management-api
-"""
-
 from fastapi import APIRouter
 
 from common.sys_casbin import get_casbin
@@ -26,7 +11,7 @@ async def add_authority(
         authority_info: sys_casbin.AuthCreate
 ):
     e = get_casbin()
-    res = e.add_policy(authority_info.role_id,authority_info.sys_id, authority_info.path, authority_info.method)
+    res = e.add_policy(authority_info.role_id,authority_info.sys_id, authority_info.path)
     if res:
         return response_code.resp_200()
     else:
@@ -38,7 +23,7 @@ async def del_authority(
         authority_info: sys_casbin.AuthCreate
 ):
     e = get_casbin()
-    res = e.remove_policy(authority_info.role_id,authority_info.sys_id,authority_info.path, authority_info.method)
+    res = e.remove_policy(authority_info.role_id,authority_info.sys_id,authority_info.path)
     if res:
         return response_code.resp_200()
     else:

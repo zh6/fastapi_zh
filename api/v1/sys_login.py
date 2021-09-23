@@ -1,16 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2020/10/16 13:38
-# @Author  : CoderCharm
-# @File    : sys_user.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
-"""
-
-"""
-
 from typing import Any
 from datetime import timedelta
 
@@ -18,7 +5,6 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
 from core import security
-from models import sys_auth
 from common import deps, logger
 from core.config import settings
 from schemas import sys_user,response_code

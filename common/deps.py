@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Time    : 2020/10/16 11:51
-# @Author  : CoderCharm
-# @File    : deps.py
-# @Software: PyCharm
-# @Github  : github/CoderCharm
-# @Email   : wg_python@163.com
-# @Desc    :
 """
 
 一些通用的依赖功能
@@ -94,11 +85,7 @@ def check_authority(
     role_ids=[role.id for role in user.roles]
     sys_id=user.roles[0].sys_id
     path = request.url.path
-    method = request.method
     e = sys_casbin.get_casbin()
-    a=[roleId for roleId in role_ids if e.enforce(str(roleId),str(sys_id), path, method)]
-    print(a)
-    if not e.enforce(str(3),str(sys_id), path, method):
-        # 注意 字段类型都是字符串
-        # 根据token中的 role_id  请求路径  方法 判断路径
+    a=[roleId for roleId in role_ids if e.enforce(str(roleId),str(sys_id), path)]
+    if not a:
         raise custom_exc.AuthenticationError()
