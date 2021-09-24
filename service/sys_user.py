@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from core.security import get_password_hash, verify_password
 from service.curd_base import CRUDBase
-from models.sys_auth import SysUser
+from model.sys_auth import SysUser
 from schemas import sys_user
 
 

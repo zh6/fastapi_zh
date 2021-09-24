@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends
 from core import security
 from common import deps, logger
 from core.config import settings
-from schemas import sys_user,response_code
+from schemas import user,response_code
 from service.sys_user import curd_user
 
 router = APIRouter()
@@ -17,7 +17,7 @@ router = APIRouter()
 async def login_access_token(
         *,
         db: Session = Depends(deps.get_db),
-        user_info: sys_user.UserEmailAuth,
+        user_info: user.UserEmailAuth,
 ) -> Any:
     """
     用户JWT登录
