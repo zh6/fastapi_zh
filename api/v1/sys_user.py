@@ -12,7 +12,7 @@ from service.sys_user import curd_user
 
 router = APIRouter()
 
-@router.get("/user/info", summary="获取用户信息", name="获取用户信息", description="此API没有验证权限")
+@router.post("/user/info", summary="获取用户信息", name="获取用户信息", description="此API没有验证权限")
 async def get_user_info(
         *,
         current_user: sys_user.UserBase = Depends(deps.get_current_user)
