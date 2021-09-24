@@ -14,7 +14,6 @@ casbin 权限
 """
 
 import casbin
-# from casbin import util
 import casbin_sqlalchemy_adapter
 
 from db.session import engine

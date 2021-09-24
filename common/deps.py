@@ -13,9 +13,7 @@ from db.session import SessionLocal
 from common import custom_exc, sys_casbin
 from models.sys_auth import SysRole, SysRoleUser, SysUser
 from core.config import settings
-from service.sys_user import curd_user
-from sqlalchemy import func
-from schemas import sys_user  
+from schemas import user  
 from collections import deque
 def get_db() -> Generator:
     """
@@ -69,12 +67,12 @@ def get_current_user(
     user=db.query(SysUser).filter(SysUser.id == user_id, SysUser.is_delete == 0).first()
     user_dict = {"nickname": user.nickname, "email": user.email, "phone":user.phone,"avatar": user.avatar,"roles": [{"id": role.id,"sys_id": role.sys_id, "name": role.name}
                            for role in roles]}
-    return sys_user.UserBase(**user_dict)
+    return user.UserBase(**user_dict)
 
 
 def check_authority(
         request: Request,
-        user: sys_user.UserBase = Depends(get_current_user)
+        user: user.UserBase = Depends(get_current_user)
 ):
     """
     权限验证 依赖于 JWT token

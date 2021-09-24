@@ -6,7 +6,6 @@ from fastapi import APIRouter, Depends
 
 from common import deps
 from schemas import user,response_code
-from service.sys_user import curd_user
 
 router = APIRouter()
 
