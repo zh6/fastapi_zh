@@ -18,10 +18,10 @@ from sqlalchemy.orm import Session
 from core.security import get_password_hash, verify_password
 from service.curd_base import CRUDBase
 from models.sys_auth import SysUser
-from schemas import sys_user
+from schemas import user
 
 
-class CRUDUser(CRUDBase[SysUser, sys_user.UserCreate, sys_user.UserUpdate]):
+class CRUDUser(CRUDBase[SysUser, user.UserCreate, user.UserUpdate]):
 
     @staticmethod
     def get_by_email(db: Session, *, email: str) -> Optional[SysUser]:
@@ -38,7 +38,7 @@ class CRUDUser(CRUDBase[SysUser, sys_user.UserCreate, sys_user.UserUpdate]):
         """
         return db.query(SysUser).filter(SysUser.email == email).first()
 
-    def create(self, db: Session, *, obj_in: sys_user.UserCreate) -> SysUser:
+    def create(self, db: Session, *, obj_in: user.UserCreate) -> SysUser:
         db_obj = SysUser(
             nickname=obj_in.nickname,
             email=obj_in.email,
