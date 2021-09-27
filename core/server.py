@@ -55,7 +55,7 @@ def create_app() -> FastAPI:
     register_exception(app)
 
     # 请求拦截
-    register_hook(app)
+    #register_hook(app)
 
     # 取消挂载在 request对象上面的操作，感觉特别麻烦，直接使用全局的
     # register_init(app)
