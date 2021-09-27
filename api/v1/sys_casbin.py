@@ -1,14 +1,14 @@
 from fastapi import APIRouter
 
 from common.sys_casbin import get_casbin
-from schemas import casbin,response_code
+from schemas import sys_casbin,response_code
 
 router = APIRouter()
 
 
 @router.post("/add/auth", summary="添加访问权限", name="添加访问权限", description="添加访问权限")
 async def add_authority(
-        authority_info: casbin.AuthCreate
+        authority_info: sys_casbin.AuthCreate
 ):
     e = get_casbin()
     res = e.add_policy(authority_info.role_id,authority_info.sys_id, authority_info.path)
@@ -20,7 +20,7 @@ async def add_authority(
 
 @router.post("/del/auth", summary="删除访问权限")
 async def del_authority(
-        authority_info: casbin.AuthCreate
+        authority_info: sys_casbin.AuthCreate
 ):
     e = get_casbin()
     res = e.remove_policy(authority_info.role_id,authority_info.sys_id,authority_info.path)

@@ -11,10 +11,11 @@ from sqlalchemy.orm import Session,aliased
 from pydantic import ValidationError
 from db.session import SessionLocal
 from common import custom_exc, sys_casbin
-from models.sys_auth import SysRole, SysRoleUser, SysUser
+from models.sys_user import  SysUser
+from models.sys_role import SysRole
+from models.sys_role_user import SysRoleUser
 from core.config import settings
-from schemas import user  
-from collections import deque
+from schemas import sys_user  
 def get_db() -> Generator:
     """
     获取sqlalchemy会话对象
@@ -67,12 +68,12 @@ def get_current_user(
     user=db.query(SysUser).filter(SysUser.id == user_id, SysUser.is_delete == 0).first()
     user_dict = {"nickname": user.nickname, "email": user.email, "phone":user.phone,"avatar": user.avatar,"roles": [{"id": role.id,"sys_id": role.sys_id, "name": role.name}
                            for role in roles]}
-    return user.UserBase(**user_dict)
+    return sys_user.UserBase(**user_dict)
 
 
 def check_authority(
         request: Request,
-        user: user.UserBase = Depends(get_current_user)
+        user: sys_user.UserBase = Depends(get_current_user)
 ):
     """
     权限验证 依赖于 JWT token

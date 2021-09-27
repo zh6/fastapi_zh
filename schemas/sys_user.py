@@ -3,7 +3,6 @@
 """
 
 from typing import Optional, List
-
 from pydantic import BaseModel, EmailStr, AnyHttpUrl
 
 # 角色基础模型
@@ -28,13 +27,13 @@ class UserAuth(BaseModel):
 # 邮箱登录认证 验证数据字段都叫username
 class UserEmailAuth(UserAuth):
     username: EmailStr
-    sys_id:str
+    sys_id:Optional[str]
 
 
 # 手机号登录认证 验证数据字段都叫username
 class UserPhoneAuth(UserAuth):
-    username: int
-    sys_id:str
+    username: Optional[int]
+    sys_id:Optional[str]
 
 
 # 创建账号需要验证的条件
@@ -43,4 +42,6 @@ class UserCreate(UserBase):
     email: EmailStr
     password: str
     avatar: Optional[AnyHttpUrl] = None
+class UserUpdate(UserBase):
+    password: Optional[str] = None
 

@@ -16,7 +16,9 @@
 # imported by Alembic # 方便在Alembic导入,迁移用
 
 from db.base_class import Base  # noqa
-from models.sys_auth import SysUser, SysRole
+from models.sys_user import SysUser
+from models.sys_role import SysRole
+from models.sys_role_user import SysRoleUser
 from models.bill import Bill
 from models.casbin_rule import CasbinRule
 from models.sys_api import SysApi
