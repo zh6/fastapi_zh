@@ -26,7 +26,7 @@ from core.config import settings
 from common.logger import logger
 from common import custom_exc
 from db.sys_redis import redis_client
-from schemas import response_code
+from schemas import response
 
 
 def create_app() -> FastAPI:
@@ -136,7 +136,7 @@ def register_exception(app: FastAPI) -> None:
         logger.error(
             f"token未知用户\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
 
-        return response_code.resp_4002(message=exc.err_desc)
+        return response.resp_4002(message=exc.err_desc)
 
     @app.exception_handler(custom_exc.TokenAuthError)
     async def user_token_exception_handler(request: Request, exc: custom_exc.TokenAuthError):
@@ -148,7 +148,7 @@ def register_exception(app: FastAPI) -> None:
         """
         logger.error(f"用户认证异常\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
 
-        return response_code.resp_4003(message=exc.err_desc)
+        return response.resp_4003(message=exc.err_desc)
 
     @app.exception_handler(custom_exc.AuthenticationError)
     async def user_not_found_exception_handler(request: Request, exc: custom_exc.AuthenticationError):
@@ -159,7 +159,7 @@ def register_exception(app: FastAPI) -> None:
         :return:
         """
         logger.error(f"用户权限不足 \nURL:{request.method}{request.url}")
-        return response_code.resp_4003(message=exc.err_desc)
+        return response.resp_4003(message=exc.err_desc)
 
     @app.exception_handler(ValidationError)
     async def inner_validation_exception_handler(request: Request, exc: ValidationError):
@@ -171,7 +171,7 @@ def register_exception(app: FastAPI) -> None:
         """
         logger.error(
             f"内部参数验证错误\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
-        return response_code.resp_5002(message=exc.errors())
+        return response.resp_5002(message=exc.errors())
 
     @app.exception_handler(RequestValidationError)
     async def request_validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -183,8 +183,8 @@ def register_exception(app: FastAPI) -> None:
         """
         logger.error(
             f"请求参数格式错误\nURL:{request.method}{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
-        # return response_code.resp_4001(message='; '.join([f"{e['loc'][1]}: {e['msg']}" for e in exc.errors()]))
-        return response_code.resp_4001(message=exc.errors())
+        # return response.resp_4001(message='; '.join([f"{e['loc'][1]}: {e['msg']}" for e in exc.errors()]))
+        return response.resp_4001(message=exc.errors())
 
     # 捕获全部异常
     @app.exception_handler(Exception)
@@ -196,7 +196,7 @@ def register_exception(app: FastAPI) -> None:
         :return:
         """
         logger.error(f"全局异常\n{request.method}URL:{request.url}\nHeaders:{request.headers}\n{traceback.format_exc()}")
-        return response_code.resp_500()
+        return response.resp_500()
 
 
 def register_hook(app: FastAPI) -> None:

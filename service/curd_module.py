@@ -2,12 +2,12 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from service.curd_base import CRUDBase
 from models.sys_module import SysModule
-from schemas import sys_module
+from schemas import module
 
 
-class CRUDModule(CRUDBase[SysModule, sys_module.ModuleCreate, sys_module.ModuleUpdate]):
+class CRUDModule(CRUDBase[SysModule, module.ModuleCreate, module.ModuleUpdate]):
 
-    def create(self, db: Session, obj_in: sys_module.ModuleCreate) -> SysModule:
+    def create(self, db: Session, obj_in: module.ModuleCreate) -> SysModule:
         db_obj = SysModule(
             name=obj_in.name,
             icon_cls=obj_in.icon_cls,
@@ -20,7 +20,7 @@ class CRUDModule(CRUDBase[SysModule, sys_module.ModuleCreate, sys_module.ModuleU
         db.commit()
         db.refresh(db_obj)
         return db_obj
-    def update(self, db: Session, obj_in: sys_module.ModuleUpdate) -> SysModule:
+    def update(self, db: Session, obj_in: module.ModuleUpdate) -> SysModule:
         db_obj = SysModule(
             name=obj_in.name,
             icon_cls=obj_in.icon_cls,

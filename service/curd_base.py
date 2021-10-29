@@ -11,7 +11,7 @@
 基础的CRUD类
 """
 
-from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
+from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union,Tuple
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -38,10 +38,28 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return db.query(self.model).filter(self.model.id == id, self.model.is_delete == 0).first()
 
     def get_multi(
-            self, db: Session, *, page: int = 1, page_size: int = 100
-    ) -> List[ModelType]:
-        temp_page = (page - 1) * page_size
-        return db.query(self.model).filter(self.model.is_delete == 0).offset(temp_page).limit(page_size).all()
+            self,
+            db: Session,
+            *,
+            filters: Tuple = tuple(),
+            order_by=None,
+            page: int = 1,
+            limit: int = 10
+    ) -> Optional[List[ModelType]]:
+        offset = limit * (page - 1)
+        query = db.query(self.model)
+        if filters:
+            query = query.filter(*filters)
+        if order_by is not None:
+            query = query.order_by(order_by)
+        query = query.offset(offset).limit(limit)
+        return query.all()
+
+    def count(self, db: Session, *, filters=tuple()) -> Any:
+        query = db.query(self.model)
+        if filters:
+            query = query.filter(*filters)
+        return query.count()
 
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
@@ -71,8 +89,16 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.refresh(db_obj)
         return db_obj
 
-    def remove(self, db: Session, *, id: int) -> ModelType:
-        obj = db.query(self.model).filter(self.model.id == id).update({self.model.is_delete: 1})
-        # db.delete(obj)
-        db.commit()
-        return obj
+    def delete(self, db: Session, *, ids):
+            if isinstance(ids, int):
+                obj = db.query(self.model).get(ids)
+                db.delete(obj)
+                db.commit()
+            elif isinstance(ids, list):
+                for i in ids:
+                    obj = db.query(self.model).get(i)
+                    db.delete(obj)
+                db.commit()
+            else:
+                raise ValueError
+            return

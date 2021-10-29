@@ -27,7 +27,7 @@ class UserAuth(BaseModel):
 # 邮箱登录认证 验证数据字段都叫username
 class UserEmailAuth(UserAuth):
     username: EmailStr
-    sys_id:Optional[str]
+    sys_id:Optional[int]
 
 
 # 手机号登录认证 验证数据字段都叫username

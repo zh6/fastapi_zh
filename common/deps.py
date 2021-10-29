@@ -10,12 +10,12 @@ from fastapi import Header, Depends, Request
 from sqlalchemy.orm import Session,aliased
 from pydantic import ValidationError
 from db.session import SessionLocal
-from common import custom_exc, sys_casbin
+from common import custom_exc, casbin
 from models.sys_user import  SysUser
 from models.sys_role import SysRole
 from models.sys_role_user import SysRoleUser
 from core.config import settings
-from schemas import sys_user  
+from schemas import user  
 def get_db() -> Generator:
     """
     获取sqlalchemy会话对象
@@ -68,12 +68,12 @@ def get_current_user(
     user=db.query(SysUser).filter(SysUser.id == user_id, SysUser.is_delete == 0).first()
     user_dict = {"nickname": user.nickname, "email": user.email, "phone":user.phone,"avatar": user.avatar,"roles": [{"id": role.id,"sys_id": role.sys_id, "name": role.name}
                            for role in roles]}
-    return sys_user.UserBase(**user_dict)
+    return user.UserBase(**user_dict)
 
 
 def check_authority(
         request: Request,
-        user: sys_user.UserBase = Depends(get_current_user)
+        user: user.UserBase = Depends(get_current_user)
 ):
     """
     权限验证 依赖于 JWT token
@@ -84,7 +84,7 @@ def check_authority(
     role_ids=[role.id for role in user.roles]
     sys_id=user.roles[0].sys_id
     path = request.url.path
-    e = sys_casbin.get_casbin()
-    a=[roleId for roleId in role_ids if e.enforce(str(roleId),str(sys_id), path)]
-    if not a:
+    e = casbin.get_casbin()
+    check=[roleId for roleId in role_ids if e.enforce(str(roleId),str(sys_id), path)]
+    if not check:
         raise custom_exc.AuthenticationError()
